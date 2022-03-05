@@ -289,7 +289,7 @@ export default class Home extends Component {
                <View style={{ flex: 1, flexDirection: 'column', height: 50 }}>
 
 
-                  <Icon onPress={()=>{this.onShare()}} name='md-card' style={{ color: 'black' }} />
+                  <Icon onPress={()=>{this.props.navigation.navigate('Mycard')}} name='md-card' style={{ color: 'black' }} />
                   <Text style={{ color: 'black', }}>My Card</Text>
                </View>
 

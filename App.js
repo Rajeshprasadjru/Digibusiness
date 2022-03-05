@@ -15,6 +15,10 @@ import Detail from './src/Detail';
 
 import Category from './src/Category';
 
+import Login from './src//Login';
+
+import Mycard from './src//Mycard';
+
 const { height } = Dimensions.get('window');
 const Drawer = createDrawerNavigator();
 import { Icon } from 'native-base';
@@ -94,7 +98,7 @@ function MyDrawer() {
 
       <Drawer.Screen
         name="Share"
-        component={Home}
+        component={Login}
         options={{
           title: 'Share',
           drawerIcon: ({ focused, size }) => (
@@ -184,6 +188,18 @@ function MyDrawer() {
 
       />   
 
+    <Drawer.Screen
+        name="Mycard"
+        component={Mycard}
+
+      /> 
+
+    <Drawer.Screen
+        name="Login"
+        component={Login}
+
+      />         
+
 
     </Drawer.Navigator>
   );
@@ -207,12 +223,12 @@ function CustomDrawerContent(props) {
       routeNames: props.state.routeNames.filter(
 
         (routeName) => {
-          routeName !== 'Category' && routeName !== 'Detail' && routeName !== 'Proceedtopay' && routeName !== 'Payment' && routeName !== 'Subcategory' && routeName !== 'Mensfashion' && routeName !== 'Shopcatgories' && routeName !== 'Flash' && routeName !== 'Stores' && routeName !== 'Brands' && routeName !== 'Deals' && routeName !== 'Login' && routeName !== 'Signup' && routeName !== 'KidsFashion' && routeName !== 'Orderdetail' && routeName !== 'Search' && routeName !== 'Editprofile' && routeName !== 'CategoryList';
+          routeName !== 'Category' && routeName !== 'Detail' && routeName !== 'Mycard' && routeName !== 'Login' && routeName !== 'Mensfashion' && routeName !== 'Shopcatgories' && routeName !== 'Flash' && routeName !== 'Stores' && routeName !== 'Brands' && routeName !== 'Deals' && routeName !== 'Login' && routeName !== 'Signup' && routeName !== 'KidsFashion' && routeName !== 'Orderdetail' && routeName !== 'Search' && routeName !== 'Editprofile' && routeName !== 'CategoryList';
         },
       ),
       routes: props.state.routes.filter(
         (route) =>
-          route.name !== 'Category' && route.name !== 'Detail' && route.name !== 'Proceedtopay' && route.name !== 'Payment' && route.name !== 'Subcategory' && route.name !== 'Mensfashion' && route.name !== 'Shopcatgories' && route.name !== 'Flash' && route.name !== 'Stores' && route.name !== 'Brands' && route.name !== 'Deals' && route.name !== 'Login' && route.name !== 'Signup' && route.name !== 'KidsFashion' && route.name !== 'Orderdetail' && route.name !== 'Search' && route.name !== 'Editprofile' && route.name !== 'CategoryList',
+          route.name !== 'Category' && route.name !== 'Detail' && route.name !== 'Mycard'  && route.name !== 'Login' && route.name !== 'Mensfashion' && route.name !== 'Shopcatgories' && route.name !== 'Flash' && route.name !== 'Stores' && route.name !== 'Brands' && route.name !== 'Deals' && route.name !== 'Login' && route.name !== 'Signup' && route.name !== 'KidsFashion' && route.name !== 'Orderdetail' && route.name !== 'Search' && route.name !== 'Editprofile' && route.name !== 'CategoryList',
 
       ),
     },

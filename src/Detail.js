@@ -8,12 +8,15 @@ import BlinkView from 'react-native-smooth-blink-view';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 const { width, height } = Dimensions.get('window');
+import YoutubePlayer from "react-native-youtube-iframe";
 export default class Detail extends Component {
     constructor(props) {
         super(props);
         this.state = {
             result: [],
             image: [],
+            playing: false,
+            vid: [],
         }
     }
     componentDidMount() {
@@ -45,7 +48,18 @@ export default class Detail extends Component {
 
                 // })
 
+                console.log("resssssssss", this.state.result.v_service);
 
+                var url = this.state.result.v_service;
+                var videoid = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+                if (videoid != null) {
+                    console.log("video id = ", videoid[1]);
+                    this.setState({vid:videoid[1]})
+                } else {
+                    console.log("The youtube url is not valid.");
+                }
+
+                
             })
             database().ref('Business').child(this.props.route.params.place).child(this.props.route.params.id).child('multiphoto').once('value', (snap) => {
 
@@ -70,6 +84,11 @@ export default class Detail extends Component {
 
 
             })
+
+
+           
+
+
 
         })
 
@@ -98,6 +117,19 @@ export default class Detail extends Component {
             alert(error.message);
         }
     };
+
+    onStateChange = () => {
+        if (state === "ended") {
+            this.setState({
+                playing: false
+            })
+            Alert.alert("video has finished playing!");
+        }
+    }
+
+    togglePlaying = () => {
+        // setPlaying((prev) => !prev);
+    }
     render() {
         return (
             <SafeAreaView>
@@ -363,7 +395,21 @@ export default class Detail extends Component {
                             /> */}
 
                         </View>
+                      
 
+                        {this.state.result.v_service != null ?
+
+                            <View style={{ marginTop: 20 }}>
+                                <YoutubePlayer
+                                    height={300}
+                                    play={this.state.playing}
+                                    videoId={this.state.vid}
+                                    onChangeState={this.onStateChange}
+                                />
+                                {/* <Button title={playing ? "pause" : "play"} onPress={this.togglePlaying} /> */}
+                            </View>
+
+                            : null}
 
 
 

@@ -1,12 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { SafeAreaView, StyleSheet, Text, View,Dimensions,Image} from 'react-native';
+const { width ,height} = Dimensions.get('window');
 export default class Payment extends React.Component {
    render() {
       return (
-         <View style = {styles.container}>
-            <Text>Payment</Text>
-         </View>
+         <SafeAreaView>
+             <View>
+             <Image
+                  resizeMode='stretch'
+                  style={{height:height,width:width}}
+                  source={require('../assets/digibusinesspayment.jpeg')}
+               />
+             </View>
+         </SafeAreaView>
       );
    }
 }
