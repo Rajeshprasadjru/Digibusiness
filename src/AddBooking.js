@@ -14,20 +14,50 @@ import { FlatList } from 'react-native-gesture-handler';
 
 import CheckBox from '@react-native-community/checkbox';
 
-import { firebase } from '@react-native-firebase/auth';
+import { firebase} from '@react-native-firebase/auth';
+
+import storage from '@react-native-firebase/storage';
+
+import RNFetchBlob from 'rn-fetch-blob';
 
 export default class AddBooking extends React.Component {
     constructor(props) {
         super(props);
         this.unsubscribe = null;
         this.state = {
+            businessname: '',
+            pcategory: '',
             bname: '',
+            mobile: '',
+            mobilee: '',
+            whatsapp: '',
+            landline: '',
+            email: '',
+            website: '',
+            address: '',
+            landmark: '',
+            village: '',
+            city: '',
+            pincode: '',
+            state: '',
+            petname: '',
+            videourl: '',
+            categorys: '',
+            location: '',
+            aboutus: '',
+            ownername: '',
+            refid: '',
+            aboutus: '',
             sliderimg2: [],
             countries: ["Egypt", "Canada", "Australia", "Ireland"],
             category: [],
             place: [],
             images: [],
             toggleCheckBox:false,
+            userid:'',
+            places:'',
+            location:'',
+
         }
     }
 
@@ -38,6 +68,7 @@ export default class AddBooking extends React.Component {
             console.log('refreshed');
 
              this.gotit();
+
         })
 
     
@@ -91,7 +122,173 @@ export default class AddBooking extends React.Component {
             if(user === null){
                this.props.navigation.navigate('Login');
             }
+            
         });
+    }
+
+    init = async() =>{
+
+        //console.log("meri image ra",this.state.images[0].path);
+
+        
+        
+
+
+
+        // const { uri } = this.state.images[0].path;
+        // const filename = this.state.images[0].path.substring(this.state.images[0].path.lastIndexOf('/') + 1);
+        // const uploadUri = Platform.OS === 'ios' ? this.state.images[0].path.replace('file://', '') : this.state.images[0].path;
+
+        // try{
+        //   await storage()
+        //   .ref(filename)
+        //   .putFile(uploadUri);
+        //   console.log("upload finally");
+        // }catch(e){
+        //     console.log(e);
+        // }
+
+
+        
+  
+        this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+            console.log("uuuuuu",user._user.uid);
+            this.setState({userid:user._user.uid});
+        });
+        console.log("isma user id k",this.state.userid);
+       if(this.state.businessname === ''){
+          alert("Enter business name");
+       }else if(this.state.pcategory === ''){
+          alert("Enter product category name");
+       }else if (this.state.bname === ''){
+          alert("Enter brand name");
+       }else if (this.state.mobile === ''){
+           alert("Enter mobile 1");
+       }else if (this.state.mobilee === ''){
+           alert("Enter mobile 2");
+       }else if(this.state.whatsapp === ''){
+           alert("Enter whatshap no");
+       }else if (this.state.landline === ''){
+           alert("Enter landline no");
+       }else if (this.state.email === ''){
+           alert("Enter email");
+       }else if(this.state.website === ''){
+           alert("Enter website url");
+       }else if (this.state.address === ''){
+           alert("Enter address");
+       }else if (this.state.landmark === ''){
+           alert("Enter landmark");
+       }
+    //    else if (this.state.village === ''){
+    //        alert("Enter village name");
+    //    }
+       else if (this.state.city === ''){
+           alert("Enter city");
+       }else if (this.state.pincode === ''){
+           alert("Enter pincode");
+       }else if (this.state.state === ''){
+           alert("Enter state");
+       }else if (this.state.petname === ''){
+           alert("Enter business pet name");
+       } else if (this.state.videourl === ''){
+           alert("Enter youtube video url");
+       } else if(this.state.aboutus === ''){
+          alert("Enter about us")
+       } else if (this.state.ownername === ''){
+          alert("Owner Name/Enter shop timetable like: Mon-Sat 9AM to 7PM")
+       } 
+    //    else if (this.state.refid === ''){
+    //     alert("Enter ref")
+    //    }
+       else{
+
+          var ref = firebase.database().ref("Business").push();
+           
+          var newPageKey = ref.key;
+          this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+            console.log("uuuuuu",user._user.uid);
+            this.setState({userid:user._user.uid});
+            firebase.database().ref("Pending").child(newPageKey).set({
+                id:newPageKey, 
+                user_id:user._user.uid,
+                v_name:this.state.businessname,
+                v_holder_name:this.state.pcategory,
+                v_tagline:this.state.bname,
+                v_mobile:this.state.mobile,
+                v_mobile_:this.state.mobilee,
+                v_whatsapp:this.state.whatsapp,
+                v_landline:this.state.landline,
+                v_email:this.state.email,
+                v_website:this.state.website,
+                v_address:this.state.address,
+                v_landmark:this.state.landmark,
+                v_village:this.state.village,
+                v_city:this.state.city,
+                v_pincode:this.state.pincode,
+                v_state:this.state.state,
+                v_b_petname:this.state.petname,
+                v_service:this.state.videourl,
+                v_latitute:'28.6070013',
+                v_longitude:'77.078095',
+                v_profile_image:'',
+                v_about:this.state.aboutus,
+                v_time_table:this.state.ownername,
+                v_refid:this.state.refid,
+                verified:false,
+                v_location:this.state.location,
+                v_category:this.state.categorys,
+                v_gst_no:'',
+                v_profile_image:''
+  
+            }).then(()=>{
+              console.log("inserted");
+              let photo = this.state.images.map( img=> img.path); 
+            photo.forEach(async(image, i) => {
+              console.log("aa ja", image);
+          const filename = image;
+          const uploadUri = Platform.OS === 'ios' ? image.replace('file://', '') : image;
+          console.log("aa ja", uploadUri);
+          try{
+            await storage()
+            .ref(filename)
+            .putFile(uploadUri);
+            console.log("upload finally");
+           // console.log("upload finally",filename.getDownloadURL()); 
+          }catch(e){
+              console.log("error",e);
+          }
+          var reff = firebase.database().ref("Pending").child(newPageKey).child("multiphoto").push();
+             
+          var newPageKeyy = reff.key;
+  
+          console.log("m kya h",newPageKeyy);
+          storage().ref(filename).getDownloadURL().then((downloadURL) => {
+              console.log("get download url",downloadURL);
+              firebase.database().ref("Pending").child(newPageKey).child("multiphoto").child(newPageKeyy).set({image_path:downloadURL})
+          });
+         // firebase.database().ref("Pendingggg").child(newPageKey).child("multiphoto").child(newPageKeyy).set({image_path:storage().ref(filename).getDownloadURL()})
+          console.log("url",storage().ref(filename).getDownloadURL());
+          if(photo.length-1 === i){
+            this.props.navigation.navigate('Home')
+            console.log("Last Element")
+           }
+  
+  
+                                })
+
+
+  
+          }).catch((error)=>{
+              console.log(error);
+          })
+        });
+          
+
+        // this.uploadImage(newPageKey,this.state.images);
+      
+       }
+
+       
     }
 
     openPicker = async () => {
@@ -178,73 +375,83 @@ export default class AddBooking extends React.Component {
 
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={businessname=>this.setState({businessname})}
+                            // value={this.state.bname}
                             placeholder="*Enter Business name"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={pcategory=>this.setState({pcategory})}
+                            // value={this.state.bname}
                             placeholder="*Enter Product category name"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={bname=>this.setState({bname})}
+                            // value={this.state.bname}
                             placeholder="*Enter brand name"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={mobile=>this.setState({mobile})}
+                            // value={this.state.bname}
                             placeholder="*Enter mobile 1[10 digit]"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={mobilee=>this.setState({mobilee})}
+                            // value={this.state.bname}
                             placeholder="*Enter mobile 2[10 digit]"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={whatsapp=>this.setState({whatsapp})}
+                            // value={this.state.bname}
                             placeholder="*Enter Whatsapp No"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={landline=>this.setState({landline})}
+                            // value={this.state.bname}
                             placeholder="*Enter Landline No"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={email=>this.setState({email})}
+                            // value={this.state.bname}
                             placeholder="*Enter Email"
                             keyboardType="email-address"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={website=>this.setState({website})}
+                            // value={this.state.bname}
                             placeholder="*Enter Website url"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={address=>this.setState({address})}
+                            // value={this.state.bname}
                             placeholder="*Enter Address"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         {/* <TextInput
                             style={styles.input}
@@ -255,25 +462,28 @@ export default class AddBooking extends React.Component {
                         /> */}
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={landmark=>this.setState({landmark})}
+                            // value={this.state.bname}
                             placeholder="*Enter landmark"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={village=>this.setState({village})}
+                            // value={this.state.bname}
                             placeholder="*Enter Village Name"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
 
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={city=>this.setState({city})}
+                            // value={this.state.bname}
                             placeholder="*Enter City"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
 
                         {/* <TextInput
@@ -286,32 +496,36 @@ export default class AddBooking extends React.Component {
 
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={pincode=>this.setState({pincode})}
+                            // value={this.state.bname}
                             placeholder="*Enter Pincode"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={state=>this.setState({state})}
+                            // value={this.state.bname}
                             placeholder="*Enter State"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={petname=>this.setState({petname})}
+                            // value={this.state.bname}
                             placeholder="*Enter business pet name"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
 
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={videourl=>this.setState({videourl})}
+                            // value={this.state.bname}
                             placeholder="*Enter youtube video url"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
 
 
@@ -338,6 +552,7 @@ export default class AddBooking extends React.Component {
                                 onSelect={(selectedItem, index) => {
                                     console.log(selectedItem, index)
                                     //  this.props.navigation.navigate('Category',{item:selectedItem})
+                                    this.setState({categorys:selectedItem})
                                 }}
                                 buttonTextAfterSelection={(selectedItem, index) => {
                                     // text represented after item is selected
@@ -377,6 +592,7 @@ export default class AddBooking extends React.Component {
                                 onSelect={(selectedItem, index) => {
                                     console.log(selectedItem, index)
                                     //  this.props.navigation.navigate('Category',{item:selectedItem})
+                                    this.setState({location:selectedItem})
                                 }}
                                 buttonTextAfterSelection={(selectedItem, index) => {
                                     // text represented after item is selected
@@ -394,27 +610,30 @@ export default class AddBooking extends React.Component {
 
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={aboutus=>this.setState({aboutus})}
+                            // value={this.state.bname}
                             placeholder="Enter about us"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
 
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={ownername=>this.setState({ownername})}
+                            // value={this.state.bname}
                             placeholder="Owner Name/Enter shop timetable like : Mon-Sat 9AM to 7PM"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
 
 
                         <TextInput
                             style={styles.input}
-                            //onChangeText={onChangeNumber}
-                            value={this.state.bname}
+                            onChangeText={refid=>this.setState({refid})}
+                            // value={this.state.bname}
                             placeholder="Enter Ref: Id"
                             keyboardType="default"
+                            autoCapitalize='characters'
                         />
 
                         <TouchableOpacity onPress={() => this.openPicker()}>
@@ -454,7 +673,9 @@ export default class AddBooking extends React.Component {
                         </View>
 
 
-                        <Button style={{backgroundColor:'#1976D2',width:"95%",alignSelf:'center',flex:1,justifyContent:'center',alignContent:'center'}}>
+                        <Button 
+                        onPress = {()=>this.init()}
+                        style={{backgroundColor:'#1976D2',width:"95%",alignSelf:'center',flex:1,justifyContent:'center',alignContent:'center'}}>
                             <Text style={{color:'white'}}>
                                 SUBMIT
                             </Text>

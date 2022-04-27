@@ -417,7 +417,9 @@ export default class Detail extends Component {
 
                 </ScrollView>
             </SafeAreaView>
-        );
+       
+       
+       );
     }
 }
 

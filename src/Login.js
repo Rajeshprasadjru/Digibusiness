@@ -268,9 +268,14 @@ export default class Login extends Component {
                         }}
                     >
                         <Image source={{ uri: successImageUri }} style={{ width: 100, height: 100, marginBottom: 25 }} />
-                        <Text style={{ fontSize: 25 }}>Login In Sucessfully!</Text>
+                        <Text style={{ fontSize: 25 }}>Are you sure want to logout</Text>
                         {/* <Text>{JSON.stringify(user)}</Text> */}
                         <Button title="Log Out" color="red" onPress={this.signOut} />
+                        
+                        <Button title="Cancel" color="black" onPress={() => this.props.navigation.navigate('Home')} />
+
+                        
+                        
                     </View>
                 )}
             </View>
@@ -288,11 +293,14 @@ const styles = StyleSheet.create({
 
     borderStyleBase: {
         width: 30,
-        height: 45
+        height: 45,
+        color:'black',
+
     },
 
     borderStyleHighLighted: {
         borderColor: "black",
+        color:'black',
     },
 
     underlineStyleBase: {
@@ -300,9 +308,11 @@ const styles = StyleSheet.create({
         height: 45,
         borderWidth: 0,
         borderBottomWidth: 1,
+        color:'black',
     },
 
     underlineStyleHighLighted: {
         borderColor: "black",
+        color:'black',
     },
 });

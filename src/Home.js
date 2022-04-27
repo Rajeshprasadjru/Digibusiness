@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Share,SafeAreaView, StyleSheet, Text, View, Image, Dimensions, ScrollView, Button, Linking } from 'react-native';
+import { Share,SafeAreaView, StyleSheet, Text, View, Image, Dimensions, ScrollView, Button, Linking, TouchableOpacity } from 'react-native';
 // import {Icon} from 'native-base';
 import { Icon } from 'native-base';
 
@@ -29,17 +29,31 @@ export default class Home extends Component {
          sliderimg2: [],
          countries : ["Egypt", "Canada", "Australia", "Ireland"],
          category: [],
+         curl:[],
       }
    }
 
    renderImage = (item) => {
+      console.log("uuuuuu"+item.curls);
       return (
+         <TouchableOpacity onPress={() => 
+            {
+               console.log("item.curls",item.curls);
+               if(item.curls!=""){
+                  Linking
+                  .openURL(item.curls)
+                  .catch(err => console.error('Error', err))
+               }
+               
+            }
+            }>
          <View style={{ flex: 1, width: width, height: width / 1.8 }}>
             <Image
                style={{ flex: 1, height: width / 1.8, resizeMode: 'stretch', margin: 10 }}
                source={{ uri: item.img_path }}
             />
          </View>
+         </TouchableOpacity>
       )
 
    }
@@ -59,16 +73,18 @@ export default class Home extends Component {
 
          snap.forEach((child) => {
             let item = child.val();
+            console.log("Banner", item);
             item.id = child.key;
             items.push({
                // c_id: child.val().c_id,
                img_path: child.val().img_path,
+               curls:child.val().c_name,
             });
 
          });
          //console.log(items)   
          this.setState({
-            sliderimg1: items
+            sliderimg1: items,
          })
 
 
@@ -77,24 +93,36 @@ export default class Home extends Component {
 
 
       var itemses = [];
+      // var values = [];
       database().ref('Poster').once('value', (snap) => {
 
          snap.forEach((child) => {
             let item = child.val();
+            console.log("Poster", item);
             item.id = child.key;
             itemses.push({
                // c_id: child.val().c_id,
                img_path: child.val().img_path,
+               curls:child.val().c_name,
+               
             });
+
+            // values.push({
+            //    curl: child.val().curl,
+            // });
+
+
 
          });
          console.log("flatlist", itemses);
          this.setState({
-            sliderimg2: itemses
+            sliderimg2: itemses,
+            // curl:values,
          })
 
 
          console.log("yeyeye", this.state.sliderimg2);
+         console.log("crllllllll", this.state.curl);
       });
 
 
@@ -219,12 +247,22 @@ export default class Home extends Component {
                      data={this.state.sliderimg1}
 
                      renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => {
+                           if(item.curls!=""){
+                              Linking
+                              .openURL(item.curls)
+                              .catch(err => console.error('Error', err))
+                           }
+                           
+                        }
+                           }>
                         <View style={{ flex: 1, width: width, height: width / 1.8 }}>
                            <Image
                               style={{ flex: 1, height: width / 1.8, resizeMode: 'stretch', borderRadius: 10, borderColor: 'grey', borderWidth: 0.5, margin: 10 }}
                               source={{ uri: item.img_path }}
                            />
                         </View>
+                        </TouchableOpacity>
 
                      )}
 
@@ -290,7 +328,7 @@ export default class Home extends Component {
 
 
                   <Icon onPress={()=>{this.props.navigation.navigate('Mycard')}} name='md-card' style={{ color: 'black' }} />
-                  <Text style={{ color: 'black', }}>My Card</Text>
+                  <Text style={{ color: 'black', }}>My Ads</Text>
                </View>
 
 

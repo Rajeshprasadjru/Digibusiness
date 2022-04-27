@@ -80,6 +80,14 @@ export default class Category extends Component {
 
     }
 
+    _listEmptyComponent = () => {
+        return (
+            <View style={{paddingTop:20}}>
+                <Text style={{alignContent:'center',justifyContent:'center',alignSelf:'center',color:'grey'}}>No card available</Text>
+            </View>
+        )
+      }
+
     renderCategory = (item) =>{
 
         console.log("flatlist",item.item.id);
@@ -185,6 +193,7 @@ export default class Category extends Component {
                   onEndReachedThreshold={5}
                   pagingEnabled={true}
                  
+                  ListEmptyComponent={this._listEmptyComponent}
 
                   renderItem={({ item, index }) => (
                      this.renderCategory(item)

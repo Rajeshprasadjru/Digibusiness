@@ -15,9 +15,13 @@ import Detail from './src/Detail';
 
 import Category from './src/Category';
 
-import Login from './src//Login';
+import Login from './src/Login';
 
-import Mycard from './src//Mycard';
+import Mycard from './src/Mycard';
+
+import Shareit from './src/Shareit';
+
+import Contact from './src/Contact';
 
 const { height } = Dimensions.get('window');
 const Drawer = createDrawerNavigator();
@@ -27,7 +31,7 @@ import AddBooking from './src/AddBooking';
 function MyDrawer() {
   return (
 
-    <Drawer.Navigator initialRouteName="Home"
+    <Drawer.Navigator initialRouteName="Login"
       drawerContent={(props) =>
 
         <CustomDrawerContent {...props} />}
@@ -67,7 +71,7 @@ function MyDrawer() {
       />
       <Drawer.Screen
         name="Notifications"
-        component={Notifications}
+        component={Profile}
         options={{
           title: 'My Profile',
           drawerIcon: ({ focused, size }) => (
@@ -98,7 +102,7 @@ function MyDrawer() {
 
       <Drawer.Screen
         name="Share"
-        component={Login}
+        component={Shareit}
         options={{
           title: 'Share',
           drawerIcon: ({ focused, size }) => (
@@ -114,7 +118,7 @@ function MyDrawer() {
 
       <Drawer.Screen
         name="Contact Us"
-        component={Home}
+        component={Contact}
         options={{
           title: 'Contact Us',
           drawerIcon: ({ focused, size }) => (
@@ -146,7 +150,7 @@ function MyDrawer() {
 
       <Drawer.Screen
         name="Logout"
-        component={Home}
+        component={Login}
         options={{
           title: 'Logout',
           drawerIcon: ({ focused, size }) => (
